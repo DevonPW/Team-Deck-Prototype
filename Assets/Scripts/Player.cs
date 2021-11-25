@@ -35,4 +35,6 @@ public class Player : MonoBehaviour
     {
         spriteRendr.sprite = normal;
     }
+
+    
 }

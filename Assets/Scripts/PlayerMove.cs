@@ -8,6 +8,9 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField] float playerMoveSpeed = 9;
 
+    [SerializeField] float slowDownSpeed = 3;
+
+
     public Player player;
 
     [SerializeField] float maxMoveSpeed = 5f;
@@ -27,8 +30,16 @@ public class PlayerMove : MonoBehaviour
         //body.velocity = new Vector2(playerMoveSpeed, body.velocity.y);
         //transform.Translate(player.moveSpeed * Time.deltaTime, 0, 0);
 
-        if (transform.position.x >= 57.54f) {//setting world space position
-            transform.position = new Vector3(0, transform.position.y);
+        if (transform.position.x >= 19.18f * 4) {//setting world space position
+            transform.position = new Vector3(transform.position.x - (19.18f * 4), transform.position.y);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Sticky") {
+            Debug.Log("Sticky");
+            body.AddForce(Vector2.left * slowDownSpeed * Time.deltaTime, ForceMode2D.Force);
         }
     }
 }

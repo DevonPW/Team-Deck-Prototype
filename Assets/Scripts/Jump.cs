@@ -14,20 +14,32 @@ public class Jump : MonoBehaviour
 
     [SerializeField] float maxHoldDuration = 1.0f;//the  largest amount of time the button can be held for it to increase jump height
 
+    Collider2D pCollider;
+
     float buttonPressTime; //the time the button started being pressed
+
+    bool isGrounded = true;
+
+    float Width, Height;
 
     // Start is called before the first frame update
     void Start()
     {
+        pCollider = gameObject.GetComponent<Collider2D>();
+
+        Width = pCollider.bounds.size.x;
+        Height = pCollider.bounds.size.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump")) {//initial jump force
+        if (Input.GetButtonDown("Jump") && isGrounded == true) {//initial jump force
             body.AddForce(new Vector2(0, 1) * initialJumpStrength, ForceMode2D.Impulse);
 
             buttonPressTime = Time.time;
+
+            //isGrounded = false;
         }
         else if (Input.GetButton("Jump")) {//continued hold jump force
             if (Time.time - buttonPressTime > maxTapDuration && Time.time - buttonPressTime <= maxHoldDuration) {
@@ -35,5 +47,46 @@ public class Jump : MonoBehaviour
             }
         }
     }
-        
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        Debug.Log("Trigger Enter");
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        Debug.Log("Trigger Exit");
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("Collision Enter");
+
+        if (collision.gameObject.tag == "Platform") {
+            if (transform.position.x + Width <= collision.gameObject.transform.position.x) {
+                Debug.Log("Side Hit");
+            }
+            else {
+                isGrounded = true;
+            }
+        }
+
+        if (collision.gameObject.tag == "Ground") {
+            isGrounded = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        Debug.Log("Collision Exit");
+
+        if (collision.gameObject.tag == "Platform") {
+            isGrounded = false;
+        }
+
+        if (collision.gameObject.tag == "Ground") {
+            isGrounded = false;
+        }
+    }
+
 }

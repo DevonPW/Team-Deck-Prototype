@@ -31,8 +31,8 @@ public class Cat : MonoBehaviour
             body.AddForce(Vector2.right * moveSpeed * Time.deltaTime, ForceMode2D.Force);
         }
 
-        if (transform.position.x >= 57.54f) {//setting world space position
-            transform.position = new Vector3(0, transform.position.y);
+        if (transform.position.x >= 19.18f * 4) {//setting world space position
+            transform.position = new Vector3(transform.position.x - (19.18f * 4), transform.position.y);
         }
     }
 
