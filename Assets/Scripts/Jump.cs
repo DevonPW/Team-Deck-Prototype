@@ -14,6 +14,10 @@ public class Jump : MonoBehaviour
 
     [SerializeField] float maxHoldDuration = 1.0f;//the  largest amount of time the button can be held for it to increase jump height
 
+    [SerializeField] AudioSource audioSrc;
+
+    //[SerializeField] AudioSource audioSrc;
+
     Collider2D pCollider;
 
     float buttonPressTime; //the time the button started being pressed
@@ -39,6 +43,8 @@ public class Jump : MonoBehaviour
 
             buttonPressTime = Time.time;
 
+            audioSrc.Play();
+
             //isGrounded = false;
         }
         else if (Input.GetButton("Jump")) {//continued hold jump force
@@ -62,6 +68,9 @@ public class Jump : MonoBehaviour
     {
         Debug.Log("Collision Enter");
 
+        if (collision.gameObject.tag == "Ground") {
+            isGrounded = true;
+        }
         if (collision.gameObject.tag == "Platform") {
             if (transform.position.x + Width <= collision.gameObject.transform.position.x) {
                 Debug.Log("Side Hit");
@@ -71,9 +80,7 @@ public class Jump : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.tag == "Ground") {
-            isGrounded = true;
-        }
+        
     }
 
     private void OnCollisionExit2D(Collision2D collision)

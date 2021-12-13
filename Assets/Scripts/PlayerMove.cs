@@ -10,6 +10,11 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField] float slowDownSpeed = 3;
 
+    [SerializeField] PlayerMoveAnim moveAnim;
+
+    [SerializeField]
+    Animator animator;
+
 
     public Player player;
 
@@ -18,7 +23,7 @@ public class PlayerMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -33,6 +38,9 @@ public class PlayerMove : MonoBehaviour
         if (transform.position.x >= 19.18f * 4) {//setting world space position
             transform.position = new Vector3(transform.position.x - (19.18f * 4), transform.position.y);
         }
+
+        //moveAnim.animLength = 100 / body.velocity.x;
+        animator.SetFloat("Speed", body.velocity.x / 5);
     }
 
     private void OnTriggerStay2D(Collider2D collider)
@@ -42,4 +50,6 @@ public class PlayerMove : MonoBehaviour
             body.AddForce(Vector2.left * slowDownSpeed * Time.deltaTime, ForceMode2D.Force);
         }
     }
+
+
 }
